@@ -1,4 +1,4 @@
-\documentclass[dvipsnames, hidelinks, t, fleqn]{beamer}
+\documentclass[dvipsnames,hidelinks,t]{beamer}
 
   % Enables the use of colour.
   \usepackage{xcolor}
@@ -40,8 +40,6 @@
   \usepackage{hyperref}
   % For plotting.
   \usepackage{pgfplots}
-  % For spacing in lists.
-  % \usepackage{enumitem}
   
   % Various tikz libraries.
   % For drawing mind maps.
@@ -74,32 +72,36 @@
   
   % Change some style options.
   \usetheme{metropolis}
-  \addtobeamertemplate{frametitle}{}{\vspace{-2mm}}
+  % Tell minted to use the following colour scheme. 
   \usemintedstyle{manni}
-  \setbeamercolor{normal text}{fg=darkgray,bg=white}
-  \setbeamercolor{structure}{fg=gmitblue}
+  % Remove some of the vertical space after the title.
+  \addtobeamertemplate{frametitle}{}{\vspace{-3mm}}
+  % Change the default theme colours.
+  \setbeamercolor{normal text}{fg=darkgray, bg=white}
+  \setbeamercolor{alerted text}{fg=gmitred, bg=white}
+  \setbeamercolor{example text}{fg=gmitblue, bg=white}
   \setbeamercolor{frametitle}{fg=gmitblue, bg=white}
-  \setbeamercolor{alerted text}{fg=gmitred}
-  \setbeamercolor{example text}{fg=gmitred}
+  \setbeamercolor*{item}{fg=gmitblue}
+  % Use a better math mode font.
   \usefonttheme[onlymath]{serif}
+  % Don't display section pages.
   \metroset{sectionpage=none}
+  % Change the default itemize bullets.
   \setbeamertemplate{itemize item}{\color{gray}--}
-  \setlength{\mathindent}{7mm}
+  % Change the position of left aligned math.
+  %\setlength{\mathindent}{7mm}
 
-  \newenvironment{novspace}{\abovedisplayskip=0pt \belowdisplayskip=0pt \abovedisplayshortskip=0pt \belowdisplayshortskip=0pt}{}
+  % An environment for displaying math in red, without lots of vertical space.
+  \newcommand{\redmath}[1]{\vspace{-3mm} {\begin{center} \color{gmitred} $ #1 $ \end{center}} \vspace{-2mm}}
 
-  \newenvironment{topdisp}{\color{gmitred}\vspace{-4mm}}{\vspace{-4mm}}
-  
+  % For displaying a blank character.
+  \newcommand{\bl}{\underline{\hspace{2mm}}}
+
   % \citeurl can be used to a clickable short url to a slide as a reference.
   \renewcommand\footnoterule{}
   \newcommand{\citeurl}[1]{\let\thefootnote\relax\footnotetext{\tiny \textcolor{gmitgrey}{\href{http://#1}{#1}}}}
   \newcommand{\citeeg}[1]{\let\thefootnote\relax\footnotetext{\tiny \textcolor{gmitgrey}{#1}}}
   
-  % A basic horizontal rule.
-  \newcommand{\hr}{\rule{\textwidth}{0.5pt}}
-  \newcommand{\bl}{\underline{\hspace{2mm}}}
-
-
   % Prevent minted from showing errors.
   \makeatletter
   \expandafter\def\csname PYGdefault@tok@err\endcsname{\def\PYGdefault@bc##1{{\strut ##1}}}

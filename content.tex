@@ -1,5 +1,5 @@
 \begin{frame}{Visualisation}
-
+  \vspace{1cm}
   \begin{adjustbox}{max width={0.9\textwidth},center} 
     \begin{tikzpicture}
       \tikzstyle{every path}=[very thick]
@@ -75,9 +75,7 @@
 
 
 \begin{frame}{Running an input}
-  \begin{topdisp}
-    $$\textrm{Tape input:} \  101101$$
-  \end{topdisp}
+  \redmath{\textrm{Tape input:} \  101101}
   \begin{center}
     \setlength{\tabcolsep}{3pt}
     \begin{tabular}{ccccccccccccccc}
@@ -92,10 +90,9 @@
     \end{tabular}
   \end{center}
   \vspace{6mm}
-  \begin{topdisp}
-    $$\textrm{Tape output:} \  101101$$
-    $$\textrm{Final state:} \  q_a \textrm{ (the accept state)}$$
-  \end{topdisp}
+  \redmath{\textrm{Tape output:} \  101101}
+  \redmath{\textrm{Final state:} \  q_a \textrm{ (the accept state)}}
+  
 
 \end{frame}
 
@@ -114,9 +111,7 @@
 
 
 \begin{frame}{Notation}
-  \begin{topdisp}
-    $$M = (Q, \Sigma, \Gamma, \delta , q_0, q_a, q_r )$$
-  \end{topdisp}
+  \redmath{M = (Q, \Sigma, \Gamma, \delta , q_0, q_a, q_r )}
   \begin{description}[aaaaaaaa]
     \item[$Q$] Set of states (finite)
     \item[$\Sigma$] Input alphabet, subset of $\Gamma \setminus \{ \sqcup \} $
