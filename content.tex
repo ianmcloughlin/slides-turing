@@ -1,0 +1,224 @@
+\begin{frame}{Visualisation}
+
+  \begin{adjustbox}{max width={0.9\textwidth},center} 
+    \begin{tikzpicture}
+      \tikzstyle{every path}=[very thick]
+      
+      \edef\sizetape{0.7cm}
+      \tikzstyle{tmtape}=[draw,minimum size=\sizetape]
+      \tikzstyle{tmhead}=[arrow box,draw,minimum size=.8cm,arrow box arrows={east:.25cm, west:0.25cm}]
+      
+      \begin{scope}[start chain=1 going right,node distance=-0.15mm]
+        \node [on chain=1,tmtape] {1};
+        \node [on chain=1,tmtape] (input) {0};
+        \node [on chain=1,tmtape] {1};
+        \node [on chain=1,tmtape] {1};
+        \node [on chain=1,tmtape] {0};
+        \node [on chain=1,tmtape] {1};
+        \node [on chain=1,tmtape] {0};
+        \node [on chain=1,tmtape] {};
+        \node [on chain=1,tmtape,draw=none] {$\ldots$};
+      \end{scope}
+
+      \node [tmhead,yshift=.7cm] at (input.north) (head) {$q_1$};
+    \end{tikzpicture}
+  \end{adjustbox}
+
+  \vspace{1cm}
+
+  \begin{adjustbox}{max width={0.9\textwidth},center} 
+    \begin{tikzpicture}
+      \tikzstyle{every path}=[very thick]
+      
+      \edef\sizetape{0.7cm}
+      \tikzstyle{tmtape}=[draw,minimum size=\sizetape]
+      \tikzstyle{tmhead}=[arrow box,draw,minimum size=.8cm,arrow box arrows={east:.25cm, west:0.25cm}]
+      
+      \begin{scope}[start chain=1 going right,node distance=-0.15mm]
+        \node [on chain=1,tmtape] {1};
+        \node [on chain=1,tmtape] {0};
+        \node [on chain=1,tmtape] (input) {1};
+        \node [on chain=1,tmtape] {1};
+        \node [on chain=1,tmtape] {0};
+        \node [on chain=1,tmtape] {1};
+        \node [on chain=1,tmtape] {0};
+        \node [on chain=1,tmtape] {};
+        \node [on chain=1,tmtape,draw=none] {$\ldots$};
+      \end{scope}
+      
+      \node [tmhead,yshift=.7cm] at (input.north) (head) {$q_2$};
+    \end{tikzpicture}
+  \end{adjustbox}
+\end{frame}
+
+\begin{frame}{State Table}
+  \begin{table}
+    \centering
+    \begin{tabular}{cc|ccc}
+    \toprule
+        State & Input & Write & Move & Next \\
+    \midrule
+        $q_0$ & $\sqcup$ & $\sqcup$ & L & $q_a$ \\
+        $q_0$ & 0 & 0 & R & $q_0$ \\
+        $q_0$ & 1 & 1 & R & $q_1$ \\
+    \midrule
+        $q_1$ & $\sqcup$ & $\sqcup$ & L & $q_f$ \\
+        $q_1$ & 0 & 0 & R & $q_1$ \\
+        $q_1$ & 1 & 1 & R & $q_0$ \\
+    \bottomrule
+    \end{tabular}
+  \end{table}
+  \begin{center}
+    $\delta(q_i, \gamma_n) \rightarrow (q_j, \gamma_m, L/R)$
+  \end{center}
+\end{frame}
+
+
+\begin{frame}{Running an input}
+  \begin{topdisp}
+    $$\textrm{Tape input:} \  101101$$
+  \end{topdisp}
+  \begin{center}
+    \setlength{\tabcolsep}{3pt}
+    \begin{tabular}{ccccccccccccccc}
+      $q_0$ & 1 &       & 0 &       & 1 &       & 1 &       & 0 &       & 1 &       &          &       \\
+            & 1 & $q_1$ & 0 &       & 1 &       & 1 &       & 0 &       & 1 &       &          &       \\
+            & 1 &       & 0 & $q_1$ & 1 &       & 1 &       & 0 &       & 1 &       &          &       \\
+            & 1 &       & 0 &       & 1 & $q_0$ & 1 &       & 0 &       & 1 &       &          &       \\
+            & 1 &       & 0 &       & 1 &       & 1 & $q_1$ & 0 &       & 1 &       &          &       \\
+            & 1 &       & 0 &       & 1 &       & 1 &       & 0 & $q_1$ & 1 &       &          &       \\
+            & 1 &       & 0 &       & 1 &       & 1 &       & 0 &       & 1 & $q_0$ & \bl &       \\
+            & 1 &       & 0 &       & 1 &       & 1 &       & 0 &       & 1 &       & \bl & $q_a$
+    \end{tabular}
+  \end{center}
+  \vspace{6mm}
+  \begin{topdisp}
+    $$\textrm{Tape output:} \  101101$$
+    $$\textrm{Final state:} \  q_a \textrm{ (the accept state)}$$
+  \end{topdisp}
+
+\end{frame}
+
+
+\begin{frame}{Outcomes}
+  Running a Turing machine on a given tape input has two effects.
+
+  \begin{alertblock}{Tape content}
+    Sometimes we're interested in what is left on the tape when the Turing machine finishes. Even for Turing machines that run forever, we can be interested in the tape output. Turing's examples focused on this.
+  \end{alertblock}
+
+  \begin{alertblock}{Accept or Fail}
+    We are also interested in whether or not the Turing machine accepts the given tape input (by ending in the accept state) or rejects it (by ending in the reject state). There is a third possibility: the machine doesn't stop.
+  \end{alertblock}
+\end{frame}
+
+
+\begin{frame}{Notation}
+  \begin{topdisp}
+    $$M = (Q, \Sigma, \Gamma, \delta , q_0, q_a, q_r )$$
+  \end{topdisp}
+  \begin{description}[aaaaaaaa]
+    \item[$Q$] Set of states (finite)
+    \item[$\Sigma$] Input alphabet, subset of $\Gamma \setminus \{ \sqcup \} $
+    \item[$\Gamma$] Tape alphabet (finite)
+    \item[$\sqcup$] Blank symbol, element of $\Gamma$
+    \item[$\delta$] Transition function, $\delta: Q \times \Gamma \rightarrow Q \times \Gamma \times \{L,R\}$
+    \item[$q_0$] Start state, $\in Q$
+    \item[$q_a$] Accept state, $\in Q$
+    \item[$q_r$] Reject state, $\in Q$, $\neq q_a$
+  \end{description}
+\end{frame}
+
+
+\begin{frame}{The blank symbol}
+  \begin{description}
+    \setlength\itemsep{4mm}
+    \item[\bl] is generally the only difference between the tape alphabet and the input alphabet.
+    \item[Some] definitions of Turing machines permit other symbols in the difference.
+    \item[Empty cells] of the tape in the machine are said to contain the blank symbol.
+    \item[Important] because the blank symbol marks the end of the input on the tape, so blank can't form part of the input.
+  \end{description}
+\end{frame}
+
+
+\begin{frame}{Alphabets}
+
+  \begin{description}[Alphabets]
+    \setlength\itemsep{4mm}
+    \item[Sets] are collections of objects. An object is either in the set or not, and elements are distinct.
+    \item[Alphabets] are sets, strings are tuples over alphabets.
+    \item[$\epsilon$] is the empty string.
+    \item[$A^*$] is the set of all strings over alphabet A, including $\epsilon$.
+    \item[$|w|$] denotes the length of a string $w$, e.g. $|001110|=6$.
+  \end{description}
+\end{frame}
+
+\begin{frame}{Strings}
+  \begin{alertblock}{Examples}
+    The following are examples of strings over the alphabet $\{0,1\}$:
+    $$100110, 111, 0, \epsilon, 0101010, 1, 11$$
+  \end{alertblock}
+\metroset{block=transparent}
+\begin{alertblock}{Single character strings}
+Note the distinction between a symbol in an alphabet and the string containing a single symbol.
+They look the same, but one is a symbol and one is a string. 
+This is akin to the distinction in C between the character \mintinline{c}{'a'} and the string literal \mintinline{c}{"a"}.
+\end{alertblock}
+\end{frame}
+
+
+\begin{frame}{Decidable languages}
+  \begin{description}
+    \setlength\itemsep{4mm}
+    \item[Language] is a set of strings.
+    \item[TM] accepts a subset of $\Sigma^*$, the language of the TM.
+    \item[Halting] -- a TM will accept an input, reject it, or never halt.
+    \item[Decider] -- a TM that halts on all inputs \emph{decides} its language.
+    \item[Decidable] language -- some TM decides it.
+  \end{description}
+\end{frame}
+
+
+
+\begin{frame}{Turing's Second Example}
+  \begin{exampleblock}{Turing's own words\ldots}
+    As a slightly more difficult example we can construct a machine to compute the sequence $001011011101111011111\ldots$.
+    The machine is to be capable of five $m$-configurations, viz. $\mathfrak{o}$, $\mathfrak{q}$, $\mathfrak{p}$, $\mathfrak{f}$, $\mathfrak{b}$ and of printing $e$, $x$, $0$, $1$.
+    The first three symbols on the tape will be $ee0$; the other figures follow on alternate squares.
+    On the intermediate squares we never print anything but $x$.
+    These letters serve to keep the place for us and are erased when we have finished with them.
+    We also arrange that in the sequence of figures on alternate squares there shall be no blanks.
+  \end{exampleblock}
+  \citeurl{www.cs.virginia.edu/~robins/Turing\_Paper\_1936.pdf}
+\end{frame}
+
+
+
+\begin{frame}{Turing's second example: state table}
+  \vspace{-4mm}
+  \begin{table}
+    \resizebox{\textwidth}{!}{
+      \centering
+      \begin{tabular}{ccp{7cm}c}
+        \toprule
+        \textbf{m-config.}  & \textbf{symbol}  & \textbf{operations} & \textbf{final m-config.} \\
+        \midrule
+        $\mathfrak{b}$ & & $Pe,R,Pe,R,P0,R,R,P0,L,L$  & $\mathfrak{o}$ \\
+        \midrule
+        \multirow{2}{*}{$\mathfrak{o}$} & $1$ & $R,Px,L,L,L$ & $\mathfrak{o}$ \\
+        & 0 & & $\mathfrak{q}$ \\
+        \midrule
+        \multirow{2}{*}{$\mathfrak{q}$} & Any (0 or 1) & $R,R$ & $\mathfrak{q}$ \\
+        & None & $P1,L$ & $\mathfrak{p}$ \\
+        \midrule
+        \multirow{3}{*}{$\mathfrak{p}$} & x & $E,R$ & $\mathfrak{q}$ \\
+        & e & R & $\mathfrak{f}$ \\
+        & None & $L,L$ & $\mathfrak{p}$ \\
+        \midrule
+        \multirow{2}{*}{$\mathfrak{f}$} & Any & $R,R$ & $\mathfrak{f}$ \\
+        & None & $P0,L,L$ & $\mathfrak{o}$ \\
+        \bottomrule
+      \end{tabular}
+    }
+  \end{table}
+\end{frame}
