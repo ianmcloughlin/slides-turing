@@ -51,132 +51,10 @@
   \end{adjustbox}
 \end{frame}
 
-\begin{frame}{State Table}
-  \begin{table}
-    \centering
-    \begin{tabular}{cc|ccc}
-    \toprule
-        State & Input & Write & Move & Next \\
-    \midrule
-        $q_0$ & $\sqcup$ & $\sqcup$ & L & $q_a$ \\
-        $q_0$ & 0 & 0 & R & $q_0$ \\
-        $q_0$ & 1 & 1 & R & $q_1$ \\
-    \midrule
-        $q_1$ & $\sqcup$ & $\sqcup$ & L & $q_f$ \\
-        $q_1$ & 0 & 0 & R & $q_1$ \\
-        $q_1$ & 1 & 1 & R & $q_0$ \\
-    \bottomrule
-    \end{tabular}
-  \end{table}
-  \begin{center}
-    $\delta(q_i, \gamma_n) \rightarrow (q_j, \gamma_m, L/R)$
-  \end{center}
-\end{frame}
-
-
-\begin{frame}{Running an input}
-  \redmath{\textrm{Tape input:} \  101101}
-  \begin{center}
-    \setlength{\tabcolsep}{3pt}
-    \begin{tabular}{ccccccccccccccc}
-      $q_0$ & 1 &       & 0 &       & 1 &       & 1 &       & 0 &       & 1 &       &          &       \\
-            & 1 & $q_1$ & 0 &       & 1 &       & 1 &       & 0 &       & 1 &       &          &       \\
-            & 1 &       & 0 & $q_1$ & 1 &       & 1 &       & 0 &       & 1 &       &          &       \\
-            & 1 &       & 0 &       & 1 & $q_0$ & 1 &       & 0 &       & 1 &       &          &       \\
-            & 1 &       & 0 &       & 1 &       & 1 & $q_1$ & 0 &       & 1 &       &          &       \\
-            & 1 &       & 0 &       & 1 &       & 1 &       & 0 & $q_1$ & 1 &       &          &       \\
-            & 1 &       & 0 &       & 1 &       & 1 &       & 0 &       & 1 & $q_0$ & \bl &       \\
-            & 1 &       & 0 &       & 1 &       & 1 &       & 0 &       & 1 &       & \bl & $q_a$
-    \end{tabular}
-  \end{center}
-  \vspace{6mm}
-  \redmath{\textrm{Tape output:} \  101101}
-  \redmath{\textrm{Final state:} \  q_a \textrm{ (the accept state)}}
-  
-
-\end{frame}
-
-
-\begin{frame}{Outcomes}
-  Running a Turing machine on a given tape input has two effects.
-
-  \begin{alertblock}{Tape content}
-    Sometimes we're interested in what is left on the tape when the Turing machine finishes. Even for Turing machines that run forever, we can be interested in the tape output. Turing's examples focused on this.
-  \end{alertblock}
-
-  \begin{alertblock}{Accept or Fail}
-    We are also interested in whether or not the Turing machine accepts the given tape input (by ending in the accept state) or rejects it (by ending in the reject state). There is a third possibility: the machine doesn't stop.
-  \end{alertblock}
-\end{frame}
-
-
-\begin{frame}{Notation}
-  \redmath{M = (Q, \Sigma, \Gamma, \delta , q_0, q_a, q_r )}
-  \begin{description}[aaaaaaaa]
-    \item[$Q$] Set of states (finite)
-    \item[$\Sigma$] Input alphabet, subset of $\Gamma \setminus \{ \sqcup \} $
-    \item[$\Gamma$] Tape alphabet (finite)
-    \item[$\sqcup$] Blank symbol, element of $\Gamma$
-    \item[$\delta$] Transition function, $\delta: Q \times \Gamma \rightarrow Q \times \Gamma \times \{L,R\}$
-    \item[$q_0$] Start state, $\in Q$
-    \item[$q_a$] Accept state, $\in Q$
-    \item[$q_r$] Reject state, $\in Q$, $\neq q_a$
-  \end{description}
-\end{frame}
-
-
-\begin{frame}{The blank symbol}
-  \begin{description}
-    \setlength\itemsep{4mm}
-    \item[\bl] is generally the only difference between the tape alphabet and the input alphabet.
-    \item[Some] definitions of Turing machines permit other symbols in the difference.
-    \item[Empty cells] of the tape in the machine are said to contain the blank symbol.
-    \item[Important] because the blank symbol marks the end of the input on the tape, so blank can't form part of the input.
-  \end{description}
-\end{frame}
-
-
-\begin{frame}{Alphabets}
-
-  \begin{description}[Alphabets]
-    \setlength\itemsep{4mm}
-    \item[Sets] are collections of objects. An object is either in the set or not, and elements are distinct.
-    \item[Alphabets] are sets, strings are tuples over alphabets.
-    \item[$\epsilon$] is the empty string.
-    \item[$A^*$] is the set of all strings over alphabet A, including $\epsilon$.
-    \item[$|w|$] denotes the length of a string $w$, e.g. $|001110|=6$.
-  \end{description}
-\end{frame}
-
-\begin{frame}{Strings}
-  \begin{alertblock}{Examples}
-    The following are examples of strings over the alphabet $\{0,1\}$:
-    $$100110, 111, 0, \epsilon, 0101010, 1, 11$$
-  \end{alertblock}
-\metroset{block=transparent}
-\begin{alertblock}{Single character strings}
-Note the distinction between a symbol in an alphabet and the string containing a single symbol.
-They look the same, but one is a symbol and one is a string. 
-This is akin to the distinction in C between the character \mintinline{c}{'a'} and the string literal \mintinline{c}{"a"}.
-\end{alertblock}
-\end{frame}
-
-
-\begin{frame}{Decidable languages}
-  \begin{description}
-    \setlength\itemsep{4mm}
-    \item[Language] is a set of strings.
-    \item[TM] accepts a subset of $\Sigma^*$, the language of the TM.
-    \item[Halting] -- a TM will accept an input, reject it, or never halt.
-    \item[Decider] -- a TM that halts on all inputs \emph{decides} its language.
-    \item[Decidable] language -- some TM decides it.
-  \end{description}
-\end{frame}
-
-
 
 \begin{frame}{Turing's Second Example}
   \begin{exampleblock}{Turing's own words\ldots}
+    \vspace{2mm}
     As a slightly more difficult example we can construct a machine to compute the sequence $001011011101111011111\ldots$.
     The machine is to be capable of five $m$-configurations, viz. $\mathfrak{o}$, $\mathfrak{q}$, $\mathfrak{p}$, $\mathfrak{f}$, $\mathfrak{b}$ and of printing $e$, $x$, $0$, $1$.
     The first three symbols on the tape will be $ee0$; the other figures follow on alternate squares.
@@ -217,3 +95,215 @@ This is akin to the distinction in C between the character \mintinline{c}{'a'} a
     }
   \end{table}
 \end{frame}
+
+
+\begin{frame}{Modern State Table}
+  \begin{table}
+    \centering
+    \begin{tabular}{cc|ccc}
+    \toprule
+        State & Input & Write & Move & Next \\
+    \midrule
+        $q_0$ & \bl & \bl & L & $q_a$ \\
+        $q_0$ &   0 &   0 & R & $q_0$ \\
+        $q_0$ &   1 &   1 & R & $q_1$ \\
+    \midrule
+        $q_1$ & \bl & \bl & L & $q_f$ \\
+        $q_1$ &   0 &   0 & R & $q_1$ \\
+        $q_1$ &   1 &   1 & R & $q_0$ \\
+    \bottomrule
+    \end{tabular}
+  \end{table}
+  \begin{center}
+    $\delta(q_i, \gamma_n) \rightarrow (q_j, \gamma_m, L/R)$
+  \end{center}
+\end{frame}
+
+
+\begin{frame}{Running an input}
+  \redmath{\textrm{Tape input:} \  101101}
+  \begin{center}
+    \setlength{\tabcolsep}{3pt}
+    \begin{tabular}{cccccccccccccc}
+      $q_0$ & 1 &       & 0 &       & 1 &       & 1 &       & 0 &       & 1 &       & \bl \\
+            & 1 & $q_1$ & 0 &       & 1 &       & 1 &       & 0 &       & 1 &       & \bl \\
+            & 1 &       & 0 & $q_1$ & 1 &       & 1 &       & 0 &       & 1 &       & \bl \\
+            & 1 &       & 0 &       & 1 & $q_0$ & 1 &       & 0 &       & 1 &       & \bl \\
+            & 1 &       & 0 &       & 1 &       & 1 & $q_1$ & 0 &       & 1 &       & \bl \\
+            & 1 &       & 0 &       & 1 &       & 1 &       & 0 & $q_1$ & 1 &       & \bl \\
+            & 1 &       & 0 &       & 1 &       & 1 &       & 0 &       & 1 & $q_0$ & \bl \\
+            & 1 &       & 0 &       & 1 &       & 1 &       & 0 & $q_a$ & 1 &       & \bl
+    \end{tabular}
+  \end{center}
+  \vspace{6mm}
+  \redmath{\textrm{Tape output:} \  101101}
+  \redmath{\textrm{Final state:} \  q_a \textrm{ (the accept state)}}
+  
+
+\end{frame}
+
+
+\begin{frame}{Outcomes}
+  Running a Turing machine on a given tape input has two effects.
+
+  \vspace{2mm}
+  \begin{alertblock}{Accept or Fail}
+    \vspace{2mm}
+    The Turing machine halts by ending in the accept or reject state.
+    The machine accepts or rejects its input.
+    Note a third possibility: the machine doesn't stop.
+  \end{alertblock}
+
+  \vspace{2mm}
+  \begin{alertblock}{Tape content}
+    \vspace{2mm}
+    Sometimes we're interested in what is left on the tape when the Turing machine finishes.
+    Even for Turing machines that run forever, we can be interested in the tape output.
+    Some of Turing's examples focused on this.
+  \end{alertblock}
+\end{frame}
+
+
+\begin{frame}{Notation}
+  \redmath{M = (Q, \Sigma, \Gamma, \delta , q_0, q_a, q_r )}
+  \begin{description}[aaaaaaaa]
+    \item[$Q$] Set of states (finite)
+    \item[$\Sigma$] Input alphabet, subset of $\Gamma \setminus \{ \bl \} $
+    \item[$\Gamma$] Tape alphabet (finite)
+    \item[\bl] Blank symbol, element of $\Gamma$
+    \item[$\delta$] Transition function, $\delta: Q \times \Gamma \rightarrow Q \times \Gamma \times \{L,R\}$
+    \item[$q_0$] Start state, $\in Q$
+    \item[$q_a$] Accept state, $\in Q$
+    \item[$q_r$] Reject state, $\in Q$, $\neq q_a$
+  \end{description}
+\end{frame}
+
+
+\begin{frame}{The blank symbol}
+  \begin{description}
+    \setlength\itemsep{4mm}
+    \item[\bl] is generally the only difference between the tape alphabet and the input alphabet.
+    \item[Some] definitions of Turing machines permit other symbols in the difference.
+    \item[Empty cells] of the tape in the machine are said to contain the blank symbol.
+    \item[Important] because the blank symbol marks the end of the input on the tape, so blank can't form part of the input.
+  \end{description}
+\end{frame}
+
+
+\begin{frame}{Recap: Alphabets}
+
+  \begin{description}[Alphabets]
+    \setlength\itemsep{6mm}
+    \item[Sets] are collections of objects. An object is either in the set or not, and elements are distinct.
+    \item[Alphabets] are sets, strings are tuples over alphabets.
+    \item[$\epsilon$] is the empty string.
+    \item[$A^*$] is the set of all strings over alphabet A, including $\epsilon$.
+    \item[$|w|$] denotes the length of a string $w$, e.g. $|001110|=6$.
+  \end{description}
+\end{frame}
+
+\begin{frame}{Recap: Strings}
+  \vspace{2mm}
+  \begin{alertblock}{Examples}
+    \vspace{2mm}
+    The following are examples of strings over the alphabet $\{0,1\}$:
+    $$100110, 111, 0, \epsilon, 0101010, 1, 11$$
+  \end{alertblock}
+  \vspace{2mm}
+\metroset{block=transparent}
+\begin{alertblock}{Single character strings}
+  \vspace{2mm}
+Note the distinction between a symbol in an alphabet and the string containing a single symbol.
+They look the same, but one is a symbol and one is a string. 
+This is akin to the distinction in C between the character \mintinline{c}{'a'} and the string literal \mintinline{c}{"a"}.
+\end{alertblock}
+\end{frame}
+
+
+\begin{frame}{Decidable languages}
+  \begin{description}
+    \setlength\itemsep{6mm}
+    \item[Language] is a set of strings.
+    \item[TM] accepts a subset of $\Sigma^*$, the language of the TM.
+    \item[Halting] -- a TM will accept an input, reject it, or never halt.
+    \item[Decider] -- a TM that halts on all inputs \emph{decides} its language.
+    \item[Decidable] language -- some TM decides it.
+  \end{description}
+\end{frame}
+
+
+\begin{frame}{Counting steps}
+  \begin{description}
+    \setlength\itemsep{6mm}
+    \item[$n$] the length of the input, irrespective of the alphabet.
+    \item[How many] times do we look-up the state table (steps) before we accept a string that is accepted?
+    \item[Assume] the number of steps is always finite --- machine is a decider. 
+    \item[Set $f(n)$] to the highest number of steps for strings of length $n$.
+    \item[What] does $f(n)$ look like? A polynomial, like $n^2$?
+  \end{description}
+\end{frame}
+
+
+
+\begin{frame}{Non-deterministic Turing machine}
+  \begin{description}
+    \setlength\itemsep{4mm}
+    \item[Deterministic] Turing machines have exactly one row in their state table for every combination of (non-terminal) state and tape symbol.
+    \item[Non-deterministic] Turing machines can have any number of rows for each state/symbol (including none).
+    \item[Key difference:] deterministic machines follow one computational path only, whereas non-deterministic machines can branch/fork into many computational paths.
+    \item[Note:] all deterministic machines are essentially non-deterministic machines. 
+  \end{description}
+\end{frame}
+
+
+\begin{frame}{Non-deterministic Turing machine and languages}
+  \begin{description}
+    \setlength\itemsep{6mm}
+    \item[Strings] are accepted by non-deterministic Turing machines if any branch ends in the accept state.
+    \item[Any] language that is accepted (or decided) by a non-deterministic Turing machine has some deterministic Turing machine that accepts (or decides) it.
+    \item[However,] the non-deterministic machine may accept strings in less steps.
+  \end{description}
+\end{frame}
+
+
+
+% \begin{frame}{Non-deterministic polynomial time}
+%   \begin{definition}
+%     A decision problem is in the NP complexity class if it is decidable by a non-deterministic Turing Machine in polynomial time.
+%   \end{definition}
+  
+%   \begin{alertblock}{P is a subset of NP}
+%     \vspace{2mm}
+%     Note that every determinisitic Turing machine is also a non-deterministic one, by our definitions.
+%     The P complexity class is a subset of NP because of this.
+%   \end{alertblock}
+
+%   \begin{alertblock}{Equivalent definition}
+%     \vspace{2mm}
+%     An equivalent definition of NP that you may come across is that NP is the set of languages $A$ that can be verified in polynomial time.
+%     By verified we mean that a deterministic Turing machine can accept a language $\{ wc \}$ where $w$ is in $A$ and $c$ is some string, called the certificate for $w$.
+%   \end{alertblock}
+
+% \end{frame}
+
+
+% \begin{frame}{NP-complete problems}
+%   \begin{definition}
+%     A problem is NP-hard if each problem in NP can be reduced to it in polynomial time.
+%   \end{definition}
+
+%   \begin{alertblock}{Reduction}
+%     \vspace{2mm}
+%     Reduction is a way of converting one problem into another, so that a solution to one is a solution to the other.
+%     By reducing decision problem A to decision problem B, we mean that we can transform inputs to A into inputs to B in such a way that a given input to A is accepted iff the corresponding input to B is.
+%   \end{alertblock}
+
+%   \begin{definition}
+%     A problem is NP-complete if it's in NP and is NP-hard.
+%   \end{definition}
+% \end{frame}
+
+
+
+
+
